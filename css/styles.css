@@ -1,0 +1,24 @@
+.flex-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ml-auto {
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.w-17 {
+  width: 17rem;
+}
+
+.w-20 {
+  width: 20rem;
+  height: 5rem;
+}
+
+.mb-10 {
+  margin-bottom: 6rem;
+}
