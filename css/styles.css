@@ -1,3 +1,9 @@
+body {
+  /* background: linear-gradient(to right, #ff922b, #c92a2a); */
+  background: linear-gradient(to right, #b2f2bb, #a5d8ff);
+  /* background: linear-gradient(to left, #333, #333 50%, #eee 75%, #333 75%); */
+}
+
 .flex-form {
   display: flex;
   justify-content: center;
@@ -15,7 +21,7 @@
 }
 
 .w-20 {
-  width: 20rem;
+  width: 15rem;
   height: 5rem;
 }
 
