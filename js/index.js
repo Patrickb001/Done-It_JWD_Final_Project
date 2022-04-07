@@ -1,5 +1,6 @@
 const taskManager = new TaskManager(0);
 let form = document.querySelector("form");
+let lists = document.querySelectorAll(".list-group");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -11,9 +12,8 @@ form.addEventListener("submit", (e) => {
     e.target[4].value,
   ];
   let isValidEntries = entries.every((entry) => entry.trim() !== "");
-  console.log(isValidEntries);
 
-  entries.forEach((entry, index) => {
+  entries.forEach((_, index) => {
     if (entries[index].trim() === "") {
       e.target[index].classList.add("invalid");
     } else {
@@ -22,18 +22,20 @@ form.addEventListener("submit", (e) => {
   });
 
   if (isValidEntries) {
-    entries.forEach((entry, index) => {
-      e.target[index].classList.remove("invalid");
-    });
-
     let dataObject = {
-      projectName: e.target[0].value,
-      description: e.target[1].value,
-      projectStatus: e.target[2].value,
-      assignedTo: e.target[3].value,
-      dueDate: e.target[4].value,
+      projectName: entries[0],
+      description: entries[1],
+      projectStatus: entries[2],
+      assignedTo: entries[3],
+      dueDate: entries[4],
     };
     taskManager.addTask(dataObject);
     taskManager.clearInput(e);
   }
 });
+
+// lists.forEach((list) => {
+//   list.addEventListener("click", (e) => {
+//     console.log(e.target.closest(".progress"));
+//   });
+// });
