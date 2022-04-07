@@ -33,3 +33,9 @@ body {
   max-height: 28rem;
   overflow-y: scroll;
 }
+
+.invalid {
+  border: 1px #c92a2a solid;
+  color: #c92a2a;
+  background-color: #ffe3e3;
+}

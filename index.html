@@ -42,7 +42,6 @@
                     class="form-control"
                     placeholder="Name"
                     aria-label="Name"
-                    required
                   />
                 </div>
                 <div class="col-4 mb-2">
@@ -52,13 +51,15 @@
                     class="form-control"
                     placeholder="description"
                     aria-label="description"
-                    required
                   />
                 </div>
                 <div class="col-4 mb-2">
                   <select class="form-select">
                     <option value="">Please select an option</option>
                     <option value="todo">Todo</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="review">Review</option>
+                    <option value="done">Done</option>
                   </select>
                 </div>
                 <div class="col-4 mb-2">
@@ -68,7 +69,6 @@
                     class="form-control"
                     placeholder="Assigned To"
                     aria-label="assignment"
-                    required
                   />
                 </div>
                 <div class="col-4 mb-2">
@@ -78,7 +78,6 @@
                     class="form-control"
                     placeholder="Assigned To"
                     aria-label="assignment"
-                    required
                   />
                 </div>
                 <div class="col-4 px-3 d-flex ml-auto">
@@ -261,9 +260,9 @@
                       aria-valuenow="25"
                       aria-valuemin="0"
                       aria-valuemax="100"
-                      style="width: 0%"
+                      style="width: 25%"
                     >
-                      0%
+                      25%
                     </div>
                   </div>
                   <!-- <li class="w-20 list-group-item">Status Bar</li> -->
@@ -281,5 +280,7 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
+    <script src="js/taskManager.js"></script>
+    <script src="js/index.js"></script>
   </body>
 </html>
