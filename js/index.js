@@ -2,7 +2,9 @@ const taskManager = new TaskManager(0);
 let form = document.querySelector("form");
 let lists = document.querySelectorAll(".list-group");
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", validateForm);
+
+function validateForm(e) {
   e.preventDefault();
   let entries = [
     e.target[0].value,
@@ -32,10 +34,53 @@ form.addEventListener("submit", (e) => {
     taskManager.addTask(dataObject);
     taskManager.clearInput(e);
   }
+}
+
+document.querySelector(".task-container").addEventListener("click", (e) => {
+  let taskStatus = e.target.closest(".progress");
+  if (taskStatus == null) return;
+  if (e.target.closest(".progress") === taskStatus) {
+    let dropdown = addDropdown();
+    taskStatus.innerHTML = dropdown;
+    if (taskStatus.innerHTML === dropdown) {
+      taskStatus.addEventListener("input", (e) => {
+        taskStatus.innerHTML = dropdownStatus(e.target.value);
+      });
+    }
+  }
 });
 
-// lists.forEach((list) => {
-//   list.addEventListener("click", (e) => {
-//     console.log(e.target.closest(".progress"));
-//   });
-// });
+function addDropdown() {
+  return `
+  <select class="form-select">
+      <option value="">Please select an option</option>
+      <option value="todo">Todo</option>
+      <option value="in-progress">In Progress</option>
+      <option value="review">Review</option>
+      <option value="done">Done</option>
+    </select>
+  `;
+}
+
+function dropdownStatus(taskValue) {
+  if (taskValue === "todo") {
+    taskValue = `25`;
+  } else if (taskValue === "in-progress") {
+    taskValue = `50`;
+  } else if (taskValue === "review") {
+    taskValue = `75`;
+  } else {
+    taskValue = `100`;
+  }
+
+  return `<div
+    class="progress-bar"
+    role="progressbar"
+    aria-valuenow="${taskValue}"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    style="width: ${taskValue}%"
+    >
+    ${taskValue}%
+  </div>`;
+}
