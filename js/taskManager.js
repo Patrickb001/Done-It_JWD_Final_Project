@@ -10,7 +10,6 @@ class TaskManager {
     dataObject.id = this.currentId;
     this.tasks.push(dataObject);
     this.createTaskHtml(dataObject);
-    // console.log(this.tasks);
     this.currentId++;
   }
 
@@ -23,17 +22,7 @@ class TaskManager {
   }
 
   createTaskHtml(dataObject) {
-    let status;
-    if (dataObject.projectStatus === "todo") {
-      status = `25`;
-    } else if (dataObject.projectStatus === "in-progress") {
-      status = `50`;
-    } else if (dataObject.projectStatus === "review") {
-      status = `75`;
-    } else {
-      status = `100`;
-    }
-
+    let status = this.handleStatus(dataObject.projectStatus);
     let date = new Date(dataObject.dueDate);
     let dateString = `${
       date.getMonth() + 1
@@ -68,15 +57,24 @@ class TaskManager {
   getTaskById(taskId, taskValue) {
     let foundTask;
     this.tasks.forEach((task) => {
-      if (+task.id === taskId) {
+      if (task.id === taskId) {
         foundTask = task;
-        console.log(true);
       }
     });
     foundTask.projectStatus = taskValue;
-    console.log(this.tasks);
-    // console.log(taskId);
-    console.log(foundTask.projectStatus);
-    // return foundTask;
+    return foundTask;
+  }
+
+  handleStatus(projectStatus) {
+    if (projectStatus === "todo") {
+      projectStatus = `25`;
+    } else if (projectStatus === "in-progress") {
+      projectStatus = `50`;
+    } else if (projectStatus === "review") {
+      projectStatus = `75`;
+    } else {
+      projectStatus = `100`;
+    }
+    return projectStatus;
   }
 }
