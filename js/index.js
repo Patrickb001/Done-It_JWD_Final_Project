@@ -1,6 +1,5 @@
 const taskManager = new TaskManager(0);
 let form = document.querySelector("form");
-let lists = document.querySelectorAll(".list-group");
 
 form.addEventListener("submit", validateForm);
 
@@ -36,7 +35,7 @@ function validateForm(e) {
   }
 }
 
-document.querySelector(".task-container").addEventListener("click", (e) => {
+document.querySelector(".task-container").addEventListener("dblclick", (e) => {
   let taskStatus = e.target.closest(".progress");
   if (taskStatus == null) return;
   if (e.target.closest(".progress") === taskStatus) {
@@ -44,7 +43,13 @@ document.querySelector(".task-container").addEventListener("click", (e) => {
     taskStatus.innerHTML = dropdown;
     if (taskStatus.innerHTML === dropdown) {
       taskStatus.addEventListener("input", (e) => {
-        taskStatus.innerHTML = dropdownStatus(e.target.value);
+        [taskStatus.innerHTML, taskValue] = dropdownStatus(e.target.value);
+        let taskItem = taskStatus.closest(".list-group");
+        let taskId = +taskStatus.closest(".list-group").dataset.taskId;
+        taskManager.getTaskById(taskId, e.target.value);
+        e.target.value === "done"
+          ? enableButton(taskItem)
+          : disableButton(taskItem);
       });
     }
   }
@@ -72,8 +77,10 @@ function dropdownStatus(taskValue) {
   } else {
     taskValue = `100`;
   }
-
-  return `<div
+  // if (taskValue === `100`) return;
+  // Add functionality to gray out button and add it back once taskValue === 100%
+  return [
+    `<div
     class="progress-bar"
     role="progressbar"
     aria-valuenow="${taskValue}"
@@ -82,5 +89,16 @@ function dropdownStatus(taskValue) {
     style="width: ${taskValue}%"
     >
     ${taskValue}%
-  </div>`;
+  </div>`,
+    taskValue,
+  ];
+}
+
+function enableButton(taskItem) {
+  let btn = taskItem.querySelector(".btn");
+  btn.classList.remove("disabled");
+}
+function disableButton(taskItem) {
+  let btn = taskItem.querySelector(".btn");
+  btn.classList.add("disabled");
 }

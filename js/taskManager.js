@@ -10,7 +10,7 @@ class TaskManager {
     dataObject.id = this.currentId;
     this.tasks.push(dataObject);
     this.createTaskHtml(dataObject);
-    console.log(this.tasks);
+    // console.log(this.tasks);
     this.currentId++;
   }
 
@@ -40,7 +40,7 @@ class TaskManager {
     }-${date.getUTCDate()}-${date.getFullYear()} `;
 
     let taskHtml = `
-    <ul id=task-${dataObject.id} class="list-group list-group-horizontal m-2">
+    <ul data-task-id=${dataObject.id} class="list-group list-group-horizontal m-2">
       <li class="w-20 list-group-item">${dataObject.description}</li>
       <li class="w-20 list-group-item bg-success text-white"> ${dataObject.assignedTo}</li>
       <li class="w-20 list-group-item bg-success text-white"> ${dataObject.projectName}</li>
@@ -57,11 +57,26 @@ class TaskManager {
           ${status}%
         </div>
        </div>
-       <button class="btn btn-danger ml-2">X</button>
+       <button class="disabled btn btn-danger ml-2">X</button>
       </ul>
     `;
     this.tasksHtmlList.push(taskHtml);
 
     this.parentElement.insertAdjacentHTML("beforeend", taskHtml);
+  }
+
+  getTaskById(taskId, taskValue) {
+    let foundTask;
+    this.tasks.forEach((task) => {
+      if (+task.id === taskId) {
+        foundTask = task;
+        console.log(true);
+      }
+    });
+    foundTask.projectStatus = taskValue;
+    console.log(this.tasks);
+    // console.log(taskId);
+    console.log(foundTask.projectStatus);
+    // return foundTask;
   }
 }
