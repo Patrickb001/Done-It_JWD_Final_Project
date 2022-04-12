@@ -1,5 +1,9 @@
-const taskManager = new TaskManager(0);
 let form = document.querySelector("form");
+const taskManager = new TaskManager(0);
+taskManager.load();
+if (taskManager.tasks.length !== 0) {
+  taskManager.tasks.forEach((task) => taskManager.createTaskHtml(task));
+}
 
 form.addEventListener("submit", validateForm);
 
@@ -17,6 +21,9 @@ function validateForm(e) {
   entries.forEach((_, index) => {
     if (entries[index].trim() === "") {
       e.target[index].classList.add("invalid");
+      setTimeout(() => {
+        e.target[index].classList.remove("invalid");
+      }, 1500);
     } else {
       e.target[index].classList.remove("invalid");
     }
@@ -31,9 +38,12 @@ function validateForm(e) {
       dueDate: entries[4],
     };
     taskManager.addTask(dataObject);
+    taskManager.save();
     taskManager.clearInput(e);
   }
 }
+
+//Event Handler
 
 document.querySelector(".task-container").addEventListener("dblclick", (e) => {
   let taskStatus = e.target.closest(".progress");
@@ -42,7 +52,7 @@ document.querySelector(".task-container").addEventListener("dblclick", (e) => {
     let dropdown = addDropdown();
     taskStatus.innerHTML = dropdown;
     if (taskStatus.innerHTML === dropdown) {
-      taskStatus.addEventListener("input", (e) => {
+      taskStatus.addEventListener("change", (e) => {
         [taskStatus.innerHTML, taskValue] = dropdownStatus(e.target.value);
         let taskItem = taskStatus.closest(".list-group");
         let taskId = +taskStatus.closest(".list-group").dataset.taskId;
@@ -50,10 +60,13 @@ document.querySelector(".task-container").addEventListener("dblclick", (e) => {
         e.target.value === "done"
           ? enableButton(taskItem)
           : disableButton(taskItem);
+        taskManager.save();
       });
     }
   }
 });
+
+// Helper Functions
 
 function addDropdown() {
   return `

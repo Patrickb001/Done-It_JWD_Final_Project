@@ -9,7 +9,9 @@ class TaskManager {
   addTask(dataObject) {
     dataObject.id = this.currentId;
     this.tasks.push(dataObject);
-    this.createTaskHtml(dataObject);
+
+    let task = this.createTaskHtml(dataObject);
+    this.tasksHtmlList.push(task);
     this.currentId++;
   }
 
@@ -29,10 +31,16 @@ class TaskManager {
     }-${date.getUTCDate()}-${date.getFullYear()} `;
 
     let taskHtml = `
-    <ul data-task-id=${dataObject.id} class="list-group list-group-horizontal m-2">
+    <ul data-task-id=${
+      dataObject.id
+    } class="list-group list-group-horizontal m-2">
       <li class="w-20 list-group-item">${dataObject.description}</li>
-      <li class="w-20 list-group-item bg-success text-white"> ${dataObject.assignedTo}</li>
-      <li class="w-20 list-group-item bg-success text-white"> ${dataObject.projectName}</li>
+      <li class="w-20 list-group-item bg-success text-white"> ${
+        dataObject.assignedTo
+      }</li>
+      <li class="w-20 list-group-item bg-success text-white"> ${
+        dataObject.projectName
+      }</li>
       <li class="w-20 list-group-item bg-success text-white"> ${dateString}</li>
       <div class="progress w-20">
         <div
@@ -46,22 +54,27 @@ class TaskManager {
           ${status}%
         </div>
        </div>
-       <button class="disabled btn btn-danger ml-2">X</button>
+       <button class="${
+         status === "100" ? "" : "disabled"
+       } btn btn-danger ml-2">X</button>
       </ul>
     `;
-    this.tasksHtmlList.push(taskHtml);
 
     this.parentElement.insertAdjacentHTML("beforeend", taskHtml);
+    return taskHtml;
   }
 
-  getTaskById(taskId, taskValue) {
+  getTaskById(taskId, taskValue = null) {
     let foundTask;
     this.tasks.forEach((task) => {
       if (task.id === taskId) {
         foundTask = task;
       }
     });
-    foundTask.projectStatus = taskValue;
+    console.log(foundTask);
+    if (taskValue !== null) {
+      foundTask.projectStatus = taskValue;
+    }
     return foundTask;
   }
 
@@ -76,5 +89,24 @@ class TaskManager {
       projectStatus = `100`;
     }
     return projectStatus;
+  }
+  save() {
+    let tasksJson = JSON.stringify(this.tasks);
+    const currentId = `${this.currentId}`;
+    localStorage.setItem("tasks", tasksJson);
+    localStorage.setItem("currentId", currentId);
+  }
+  load() {
+    let tasksJson;
+    let currentId;
+    if (localStorage.getItem("tasks") !== null) {
+      tasksJson = JSON.parse(localStorage.getItem("tasks"));
+    } else return;
+    if (localStorage.getItem("currentId") !== null) {
+      currentId = +JSON.parse(localStorage.getItem("currentId"));
+    } else return;
+
+    this.tasks = tasksJson;
+    this.currentId = currentId;
   }
 }
