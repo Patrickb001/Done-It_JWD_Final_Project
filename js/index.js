@@ -20,6 +20,7 @@ function validateForm(e) {
 
   entries.forEach((_, index) => {
     if (entries[index].trim() === "") {
+      // console.log(e.target[index].placeholder);
       e.target[index].classList.add("invalid");
       setTimeout(() => {
         e.target[index].classList.remove("invalid");
@@ -64,6 +65,16 @@ document.querySelector(".task-container").addEventListener("dblclick", (e) => {
       });
     }
   }
+});
+
+document.querySelector(".task-container").addEventListener("click", (e) => {
+  const btn = e.target.closest(".delete-btn");
+  if (btn == null) return;
+  let task = btn.closest(".list-group");
+  let taskId = +task.dataset.taskId;
+  taskManager.deleteTask(taskId);
+  taskManager.save();
+  task.remove();
 });
 
 // Helper Functions

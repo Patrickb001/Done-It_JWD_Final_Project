@@ -56,7 +56,7 @@ class TaskManager {
        </div>
        <button class="${
          status === "100" ? "" : "disabled"
-       } btn btn-danger ml-2">X</button>
+       } btn btn-danger delete-btn ml-2">X</button>
       </ul>
     `;
 
@@ -108,5 +108,15 @@ class TaskManager {
 
     this.tasks = tasksJson;
     this.currentId = currentId;
+  }
+
+  deleteTask(taskId) {
+    let newTasks = [];
+    this.tasks.forEach((task) => {
+      console.log(task.id === taskId);
+      if (task.id !== taskId) newTasks.push(task);
+    });
+    this.tasks = newTasks;
+    console.log(this.tasks);
   }
 }
