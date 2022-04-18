@@ -20,7 +20,6 @@ function validateForm(e) {
 
   entries.forEach((_, index) => {
     if (entries[index].trim() === "") {
-      // console.log(e.target[index].placeholder);
       e.target[index].classList.add("invalid");
       setTimeout(() => {
         e.target[index].classList.remove("invalid");
