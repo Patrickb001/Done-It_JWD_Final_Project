@@ -45,28 +45,34 @@ function validateForm(e) {
 
 //Event Handler
 
-document.querySelector(".task-container").addEventListener("dblclick", (e) => {
+document
+  .querySelector(".task-container")
+  .addEventListener("dblclick", handleStatusChange);
+
+document
+  .querySelector(".task-container")
+  .addEventListener("click", removeTaskElement);
+
+// Helper Functions
+function handleStatusChange(e) {
   let taskStatus = e.target.closest(".progress");
   if (taskStatus == null) return;
-  if (e.target.closest(".progress") === taskStatus) {
-    let dropdown = addDropdown();
-    taskStatus.innerHTML = dropdown;
-    if (taskStatus.innerHTML === dropdown) {
-      taskStatus.addEventListener("change", (e) => {
-        [taskStatus.innerHTML, taskValue] = dropdownStatus(e.target.value);
-        let taskItem = taskStatus.closest(".list-group");
-        let taskId = +taskStatus.closest(".list-group").dataset.taskId;
-        taskManager.getTaskById(taskId, e.target.value);
-        e.target.value === "done"
-          ? enableButton(taskItem)
-          : disableButton(taskItem);
-        taskManager.save();
-      });
-    }
-  }
-});
 
-document.querySelector(".task-container").addEventListener("click", (e) => {
+  taskStatus.innerHTML = addDropdown();
+
+  taskStatus.addEventListener("change", (e) => {
+    [taskStatus.innerHTML, taskValue] = dropdownStatus(e.target.value);
+    let taskItem = taskStatus.closest(".list-group");
+    let taskId = +taskStatus.closest(".list-group").dataset.taskId;
+    taskManager.getTaskById(taskId, e.target.value);
+    e.target.value === "done"
+      ? enableButton(taskItem)
+      : disableButton(taskItem);
+    taskManager.save();
+  });
+}
+
+function removeTaskElement(e) {
   const btn = e.target.closest(".delete-btn");
   if (btn == null) return;
   let task = btn.closest(".list-group");
@@ -74,9 +80,7 @@ document.querySelector(".task-container").addEventListener("click", (e) => {
   taskManager.deleteTask(taskId);
   taskManager.save();
   task.remove();
-});
-
-// Helper Functions
+}
 
 function addDropdown() {
   return `

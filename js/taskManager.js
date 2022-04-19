@@ -24,23 +24,19 @@ class TaskManager {
   }
 
   createTaskHtml(dataObject) {
-    let status = this.handleStatus(dataObject.projectStatus);
-    let date = new Date(dataObject.dueDate);
+    let { projectStatus, dueDate, assignedTo, projectName, id, description } =
+      dataObject;
+    let status = this.handleStatus(projectStatus);
+    let date = new Date(dueDate);
     let dateString = `${
       date.getMonth() + 1
     }-${date.getUTCDate()}-${date.getFullYear()} `;
 
     let taskHtml = `
-    <ul data-task-id=${
-      dataObject.id
-    } class="list-group list-group-horizontal m-2">
-      <li class="w-20 list-group-item">${dataObject.description}</li>
-      <li class="w-20 list-group-item bg-success text-white"> ${
-        dataObject.assignedTo
-      }</li>
-      <li class="w-20 list-group-item bg-success text-white"> ${
-        dataObject.projectName
-      }</li>
+    <ul data-task-id=${id} class="list-group list-group-horizontal m-2">
+      <li class="w-20 list-group-item">${description}</li>
+      <li class="w-20 list-group-item bg-success text-white"> ${assignedTo}</li>
+      <li class="w-20 list-group-item bg-success text-white"> ${projectName}</li>
       <li class="w-20 list-group-item bg-success text-white"> ${dateString}</li>
       <div class="progress w-20">
         <div
@@ -71,11 +67,8 @@ class TaskManager {
         foundTask = task;
       }
     });
-    console.log(foundTask);
-    if (taskValue !== null) {
-      foundTask.projectStatus = taskValue;
-    }
-    return foundTask;
+
+    foundTask.projectStatus = taskValue;
   }
 
   handleStatus(projectStatus) {
@@ -113,10 +106,8 @@ class TaskManager {
   deleteTask(taskId) {
     let newTasks = [];
     this.tasks.forEach((task) => {
-      console.log(task.id === taskId);
       if (task.id !== taskId) newTasks.push(task);
     });
     this.tasks = newTasks;
-    console.log(this.tasks);
   }
 }
